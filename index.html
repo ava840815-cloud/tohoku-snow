@@ -684,4 +684,14 @@ document.querySelectorAll('.tabs button[data-t]').forEach(b=>b.onclick=()=>{tab=
 function toTop(){const d=tab=='it'&&document.querySelector('.days');const y=d?Math.max(0,d.getBoundingClientRect().top+scrollY-12):0;try{scrollTo({top:y,behavior:'smooth'})}catch(e){scrollTo(0,y)}}
 {let tq=0;const tu=()=>{tq=0;const b=$('totop');if(b)b.classList.toggle('on',scrollY>520&&!$('md').classList.contains('on'))};addEventListener('scroll',()=>{if(!tq)tq=requestAnimationFrame(tu)},{passive:true});new MutationObserver(tu).observe($('md'),{attributes:true,attributeFilter:['class']});tu()}
 
-</script></body></html>
+</script><script>/* 手機雙指放大時，底部導覽列維持原本大小並固定在畫面底部 */
+(function(){var vv=window.visualViewport;if(!vv)return;var raf=0;
+function fix(){raf=0;var nav=document.querySelector('nav.tabs');if(!nav)return;var s=vv.scale||1;
+if(s<1.01){if(nav.style.transform){nav.style.transform='';nav.style.transformOrigin='';nav.style.right='';nav.style.width=''}return}
+var H=document.documentElement.clientHeight,W=document.documentElement.clientWidth;
+nav.style.transformOrigin='0 100%';nav.style.right='auto';nav.style.width=W+'px';
+nav.style.transform='translate('+vv.offsetLeft+'px,'+(vv.offsetTop+vv.height-H)+'px) scale('+(1/s)+')'}
+function q(){if(!raf)raf=requestAnimationFrame(fix)}
+vv.addEventListener('resize',q);vv.addEventListener('scroll',q);window.addEventListener('scroll',q,{passive:true})})();
+</script>
+</body></html>
