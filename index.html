@@ -15,7 +15,7 @@ header{padding:22px 4px 8px}header h1{font-size:34px}header h1 small{font-size:1
 .row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)}.row>span{flex:1}a.row{color:inherit;text-decoration:none}.row input[type=checkbox],.wh,.wr{flex:none;width:20px;height:20px;accent-color:var(--rt)}
 .add{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.add input{flex:1;min-width:90px}
 input,select,textarea{font:inherit;letter-spacing:.05em;background:#f6f9fb;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:6px 10px}.add input,.fi{border-radius:12px}select{max-width:100%}
-.fi{width:100%;margin:4px 0 10px}.lb{display:block;font-size:12.5px;color:var(--sub);margin-top:4px}
+.fi{width:100%;margin:4px 0 10px}.sh{overflow-x:hidden;overscroll-behavior:contain}.sh input,.sh select,.sh textarea{font-size:16px;max-width:100%}.mvx{border:1px dashed var(--line);border-radius:14px;padding:6px 10px 10px;margin:6px 0 10px}.mvx .fi{margin:4px 0 6px}.mvrow{display:flex;gap:8px;align-items:center}.mvrow select{flex:1}.mvrow .btn{margin:0;flex:none;padding:7px 16px}.lb{display:block;font-size:12.5px;color:var(--sub);margin-top:4px}
 table{width:100%;border-collapse:collapse;font-size:14px}td{padding:5px 4px;border-bottom:1px dashed var(--line)}.sos{font-size:22px;color:var(--rt)}
 .days{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:none}.days::-webkit-scrollbar{display:none}
 .day{flex:0 0 66px;text-align:center;border-radius:20px;padding:10px 0;background:var(--card);border:1px solid var(--line);cursor:pointer;font:inherit;color:inherit}.day b{display:block;font-size:24px;line-height:1.1}.day span{font-size:11px;color:var(--sub)}.day.on{background:var(--maple);color:#fff;border-color:var(--rt)}.day.on span{color:#d6e4f0}
@@ -286,7 +286,7 @@ if(add)cur+=add;unk=!add}}
 return prev}
 let UNDO=null,UNDOM=null;
 const mvOpt=di=>dkeys.map((d,i)=>i==di?'':`<option value="${i}" ${i==(di+1<days.length?di+1:di-1)?'selected':''}>${d}　Day ${i+1}</option>`).join('');
-const mvUI=(p,di)=>`<label class="lb">移到其他天（連同照片、連結一起搬）</label><div class="add"><select class="fi" id="${p}_mvd">${mvOpt(di)}</select><select class="fi" id="${p}_mvp"><option value="end">放該天最後</option><option value="start">放該天最前</option></select><button type="button" class="btn" id="${p}_mvb">移動</button></div>`;
+const mvUI=(p,di)=>`<div class="mvx"><label class="lb">移到其他天（連同照片、連結一起搬）</label><select class="fi" id="${p}_mvd">${mvOpt(di)}</select><div class="mvrow"><select class="fi" id="${p}_mvp"><option value="end">放該天最後</option><option value="start">放該天最前</option></select><button type="button" class="btn" id="${p}_mvb">移動</button></div></div>`;
 const jcp=o=>JSON.parse(JSON.stringify(o));
 function mvDone(snap,td,pos,what){snap.forEach(x=>svDay(x.di));UNDOM={L:snap};fill();toast('已把'+what+'移到 '+dkeys[td]+'（'+(pos=='start'?'最前面':'最後面')+'） <button onclick="undoMove()">復原</button>',9000)}
 (function(){let st=null,tm=0,sup=0,as=0,ln=null;
