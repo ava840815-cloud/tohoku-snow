@@ -256,10 +256,10 @@ function dup(di,gi,ci){const g=days[di].g[gi],c=g.it[ci];g.it.splice(ci+1,0,{id:
 /* 智慧重排時間：依停留時間＋交通方式往後推 */
 const FUZ=/^(上午|下午|傍晚|晚上|夜|夜晚|中午|早上|清晨|午餐|晚餐|早餐|午後|白天)$/;
 const tmP=s=>{const m=String(s||'').match(/^\s*(\d{1,2}):(\d{2})/);return m?(+m[1])*60+(+m[2]):null};
-const shT=(t,d)=>String(t).replace(/(\d{1,2}):(\d{2})/g,(m,h,mi)=>{let n=((+h*60+ +mi+d)%1440+1440)%1440,H=Math.floor(n/60),M=n%60;return (h.length==2?String(H).padStart(2,'0'):H)+':'+String(M).padStart(2,'0')});
-function shiftAfter(x,gi,ot,nt){let d=0;const os=tmP(ot),ns=tmP(nt);if(os!=null&&ns!=null)d=ns-os;if(!d){const oe=tmE(ot),ne=tmE(nt);if(oe!=null&&ne!=null)d=ne-oe}if(!d)return 0;let n=0;for(let i=gi+1;i<x.g.length;i++){const g=x.g[i];if(tmP(g.t)!=null||tmE(g.t)!=null){g.t=shT(g.t,d);n++}}return n?{n,d}:0}
-const shMsg=r=>{const a=Math.abs(r.d),u=a%60?a+' 分鐘':(a/60)+' 小時';return '後面 '+r.n+' 個時段已同步'+(r.d>0?'延後 ':'提前 ')+u}
-const tmE=s=>{const m=String(s||'').match(/~\s*(\d{1,2}):(\d{2})\s*$/);return m?(+m[1])*60+(+m[2]):null};
+const shT=(t,d)=>String(t).replace(/(\d{1,2}):(\d{2})/g,(m,h,mi)=>{let n=((+h*60+ +mi+d)%1440+1440)%1440,H=Math.floor(n/60),M=n%60;return (h.length==2&&h[0]=='0'?String(H).padStart(2,'0'):H)+':'+String(M).padStart(2,'0')});
+function shiftAfter(x,gi,ot,nt){const os=tmP(ot),ns=tmP(nt),oe=tmE(ot),ne=tmE(nt),rng=oe!=null&&ne!=null;const ds=(os!=null&&ns!=null)?ns-os:0,de=rng?ne-oe:0;let fwd=0,back=0;if(!rng)fwd=ds;else if(ds&&ds==de)fwd=de;else{fwd=de;back=ds}const has=g=>tmP(g.t)!=null||tmE(g.t)!=null;let nf=0,nb=0;if(fwd)for(let i=gi+1;i<x.g.length;i++){if(has(x.g[i])){x.g[i].t=shT(x.g[i].t,fwd);nf++}}if(back)for(let i=gi-1;i>=0;i--){if(has(x.g[i])){x.g[i].t=shT(x.g[i].t,back);nb++}}return(nf||nb)?{nf,nb,fwd,back}:0}
+const shU=d=>{const a=Math.abs(d);return a%60?a+' 分鐘':(a/60)+' 小時'};const shMsg=r=>[r.nf?'後面 '+r.nf+' 個時段已'+(r.fwd>0?'延後 ':'提前 ')+shU(r.fwd):'',r.nb?'前面 '+r.nb+' 個時段已'+(r.back>0?'延後 ':'提前 ')+shU(r.back):''].filter(Boolean).join('，')
+const tmE=s=>{const m=String(s||'').match(/[~～〜\-–—]\s*(\d{1,2}):(\d{2})\s*$/);return m?(+m[1])*60+(+m[2]):null};
 const tmF=n=>{n=Math.round(n);const h=Math.floor(n/60)%24,m=n%60;return h+':'+String(m).padStart(2,'0')};
 const cDur=(c,n)=>{if(!c)return 0;if(c.du!=null)return c.du;if('宿交機日停'.includes(c.c))return 0;if((c.tg||[]).includes('onsen'))return 90;if(c.c=='食')return 60;return n>1?40:60};
 const gLL=c=>{try{if(!c||isRest&&0)return null;return llOf(c.a)||gaz(c.n)}catch(_){return null}};
