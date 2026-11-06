@@ -531,14 +531,14 @@ function pkE(k,i,b){const sp=b.parentNode.querySelector('span'),inp=document.cre
 let FLK=null;function flK(){if(FLK)return FLK;const m=/(\d{4})\/(\d+)\/(\d+)/.exec((TR.out||{}).date||'');if(m){const d=new Date(+m[1],m[2]-1,+m[3]);d.setDate(d.getDate()+1);if(new Date()>=d)return 'ret'}return 'out'}
 function flSw(k,e){e&&e.stopPropagation();FLK=k;const b=document.getElementById('flbox');if(b)b.innerHTML=flH(k)}
 function flGo(){trE(flK())}
-function flH(k){const f=TR[k]||{},Z={TPE:8,TSA:8,KHH:8,RMQ:8,OKJ:9,HND:9,NRT:9,KIX:9,TAK:9,KCZ:9,MYJ:9,TKS:9,NGO:9},tm=s=>{const m=/(\d+):(\d+)/.exec(s||'');return m?(+m[1])*60+(+m[2]):null};
+function flH(k){const f=TR[k]||{},Z={TPE:8,TSA:8,KHH:8,RMQ:8,AXT:9,OKJ:9,HND:9,NRT:9,KIX:9,TAK:9,KCZ:9,MYJ:9,TKS:9,NGO:9},tm=s=>{const m=/(\d+):(\d+)/.exec(s||'');return m?(+m[1])*60+(+m[2]):null};
 let dur='';const a=tm(f.dep),b=tm(f.arr);if(a!=null&&b!=null){let d=b-a-((Z[f.tc]??8)-(Z[f.fc]??8))*60;if(d<0)d+=1440;dur=`${Math.floor(d/60)} 小時 ${d%60} 分`}
 const dm=/(\d{4})\/(\d+)\/(\d+)/.exec(f.date||''),dt=dm?new Date(+dm[1],dm[2]-1,+dm[3]):null,ds=dt?`${+dm[2]}/${+dm[3]}（${'日一二三四五六'[dt.getDay()]}）`:esc(f.date);
 let cd='';if(dt){const t=new Date();t.setHours(0,0,0,0);const n=Math.round((dt-t)/864e5);cd=n>0?`還有 ${n} 天`:n==0?'就是今天':''}
 const px=String(f.pax||'').split('\n').map(l=>l.split('｜').map(x=>x.trim())).filter(p=>p[0]);
 const bg=p=>{const m=(p||'').match(/托運\s*(\d+)\s*kg.*?隨身\s*(\d+)\s*kg/);return m?`${m[1]} / ${m[2]} kg`:esc(p||'')};
 const o=k=='out',term=s=>esc(String(s||'').replace(/第\s*(\S+?)\s*航廈/,'T$1').replace('一','1').replace('二','2'));
-const AP={TPE:'桃園機場',TSA:'松山機場',KHH:'小港機場',OKJ:'桃太郎機場',HND:'羽田機場',NRT:'成田機場',KIX:'關西機場',TAK:'高松機場'},CT=x=>String(x||'').replace(/[（(].*?[)）]/g,'').trim(),apn=(c,n)=>esc(CT(n)+(AP[c]?'・'+AP[c]:'')),A={c:esc(f.fc),n:apn(f.fc,f.from),t:esc(f.dep),l:'FROM'},B={c:esc(f.tc),n:apn(f.tc,f.to),t:esc(f.arr),l:'TO'},AIR=(a=>{a=String(a||'').replace(/\s*[A-Za-z][A-Za-z\s]*$/,'').trim();return a.length==2&&!/航$/.test(a)?a+'航空':a})(f.air),L=o?A:B,R=o?B:A;
+const AP={AXT:'秋田機場',TPE:'桃園機場',TSA:'松山機場',KHH:'小港機場',OKJ:'桃太郎機場',HND:'羽田機場',NRT:'成田機場',KIX:'關西機場',TAK:'高松機場'},CT=x=>String(x||'').replace(/[（(].*?[)）]/g,'').trim(),apn=(c,n)=>esc(CT(n)+(AP[c]?'・'+AP[c]:'')),A={c:esc(f.fc),n:apn(f.fc,f.from),t:esc(f.dep),l:'FROM'},B={c:esc(f.tc),n:apn(f.tc,f.to),t:esc(f.arr),l:'TO'},AIR=(a=>{a=String(a||'').replace(/\s*[A-Za-z][A-Za-z\s]*$/,'').trim();return a.length==2&&!/航$/.test(a)?a+'航空':a})(f.air),L=o?A:B,R=o?B:A;
 const H=62+Math.max(1,px.length)*20;
 return `<div class="fls"><div class="flt ${o?'flo':'flr'}" style="--bh:${H}px" onclick="flGo()" role="button">
 <div class="flk"><span class="flsw"><button class="${o?'on':''}" onclick="flSw('out',event)">去程</button><button class="${o?'':'on'}" onclick="flSw('ret',event)">回程</button></span><span class="flair">${esc(AIR)}</span>${cd?`<span class="flcd">${cd}</span>`:''}</div>
